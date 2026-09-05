@@ -1,0 +1,21 @@
+{
+  "name": "max-skills",
+  "version": "0.1.0",
+  "description": "Max's agent skills: Claude Code setup and personal teaching workflows.",
+  "homepage": "https://github.com/OctronLab/max-skills",
+  "repository": "https://github.com/OctronLab/max-skills",
+  "author": {
+    "name": "Max"
+  },
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "productivity",
+    "setup",
+    "teaching"
+  ],
+  "skills": [
+    "./skills/setup-max-skills",
+    "./skills/teach-me"
+  ]
+}

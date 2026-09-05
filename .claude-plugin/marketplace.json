@@ -1,0 +1,22 @@
+{
+  "name": "max",
+  "owner": {
+    "name": "Max",
+    "url": "https://github.com/OctronLab"
+  },
+  "description": "Max's personal agent skills, as an installable Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "max-skills",
+      "source": "./",
+      "description": "Max's agent skills: Claude Code setup and personal teaching workflows.",
+      "category": "productivity",
+      "keywords": [
+        "skills",
+        "productivity",
+        "setup",
+        "teaching"
+      ]
+    }
+  ]
+}
