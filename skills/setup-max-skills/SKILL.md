@@ -35,7 +35,7 @@ If nothing differs and both style files match, say the machine is already config
 
 Otherwise one confirmation for the whole set is enough.
 
-A value that diverges deliberately is not a mistake to correct. If `attribution.commit` holds a custom trailer string rather than `false`, or `outputStyle` names a style that is not one of these two, point it out and ask before overwriting.
+A value that diverges deliberately is not a mistake to correct. If `attribution.commit` holds a custom trailer string rather than an empty string, or `outputStyle` names a style that is not one of these two, point it out and ask before overwriting.
 
 ### 3. Write `~/.claude/settings.json`
 
@@ -44,8 +44,8 @@ Merge these keys. Do not rewrite the file wholesale; keep every key that is alre
 ```json
 {
   "attribution": {
-    "commit": false,
-    "pr": false,
+    "commit": "",
+    "pr": "",
     "sessionUrl": false
   },
   "outputStyle": "ASD-STE100",
@@ -56,6 +56,8 @@ Merge these keys. Do not rewrite the file wholesale; keep every key that is alre
 `outputStyle` is shown at its default here. On a re-run, keep the value that is already set unless the user asks to change it.
 
 **`attribution`** turns off all three things Claude Code adds to git by default: the `Co-authored-by: Claude` commit trailer, the attribution line in PR descriptions, and the claude.ai session link in cloud and Remote Control commits. Max wants his commits to look like his commits.
+
+Watch the types. `commit` and `pr` are strings, and an empty string is what hides them. Only `sessionUrl` is a Boolean. A `false` in either string field fails settings validation, and Claude Code then falls back to the default attribution, which is the opposite of the intent.
 
 If the file still has `includeCoAuthoredBy`, delete it. That key is deprecated and `attribution` replaces it.
 
