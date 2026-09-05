@@ -1,12 +1,14 @@
 ---
 name: setup-max-skills
-description: "Apply Max's Claude Code configuration: git attribution off, ASD-STE100 output style, Remote Control at startup, and the mattpocock-skills plugin. Run once after installing this plugin."
+description: "Apply Max's Claude Code configuration: git attribution off, ASD-STE100 output style, Remote Control at startup, and the mattpocock-skills plugin. Run once after installing."
 disable-model-invocation: true
 ---
 
 # Setup Max Skills
 
 Apply Max's Claude Code configuration. Every setting below is user-scoped, so it belongs in `~/.claude/settings.json` and applies to all repos.
+
+**On Codex or any agent that is not Claude Code, stop here.** Everything this skill writes is Claude Code configuration. Say so and do nothing.
 
 Prompt-driven, not a script. Read the current state, show the diff, confirm, then write.
 
@@ -42,10 +44,10 @@ Merge these keys. Do not rewrite the file wholesale; keep every key that is alre
 
 If the file still has `includeCoAuthoredBy`, delete it. That key is deprecated and `attribution` replaces it.
 
-**`outputStyle`** picks one of the two styles this plugin ships. Ask which one; default to `ASD-STE100`.
+**`outputStyle`** picks one of the two styles this skill ships. Copy both files from [`./output-styles/`](./output-styles) into `~/.claude/output-styles/`, then ask which one to select. Default to `ASD-STE100`. Overwrite an older copy; these files are the source of truth.
 
-- [`ASD-STE100`](../../output-styles/asd-ste100.md): Opus 5 writes dense prose by default. ASD-STE100 is a controlled language - short sentences, one idea each, plain approved words.
-- [`i-have-adhd`](../../output-styles/i-have-adhd.md): leads with the next action, numbers multi-step work, restates state across turns, kills tangents.
+- [`ASD-STE100`](./output-styles/asd-ste100.md): Opus 5 writes dense prose by default. ASD-STE100 is a controlled language - short sentences, one idea each, plain approved words.
+- [`i-have-adhd`](./output-styles/i-have-adhd.md): leads with the next action, numbers multi-step work, restates state across turns, kills tangents.
 
 Both keep the coding instructions, so only the prose changes.
 
@@ -63,13 +65,13 @@ Skip this step if it is already installed.
 
 ### 5. Check the `i-have-adhd` upstream for updates
 
-The [`i-have-adhd`](../../output-styles/i-have-adhd.md) style is a vendored copy of a skill by [ayghri](https://github.com/ayghri/i-have-adhd) (MIT). It does not update itself. Check whether upstream has moved:
+The [`i-have-adhd`](./output-styles/i-have-adhd.md) style is a vendored copy of a skill by [ayghri](https://github.com/ayghri/i-have-adhd) (MIT). It does not update itself. Check whether upstream has moved:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/ayghri/i-have-adhd/main/skills/i-have-adhd/SKILL.md
 ```
 
-Compare the body below the frontmatter against `output-styles/i-have-adhd.md`. If it differs, show the diff and ask whether to pull the change in. Keep this repo's frontmatter either way; only the body is vendored.
+Compare the body below the frontmatter against `./output-styles/i-have-adhd.md`. If it differs, show the diff and ask whether to pull the change in. Keep this skill's frontmatter either way; only the body is vendored. A pulled change belongs in both this skill's copy and `~/.claude/output-styles/i-have-adhd.md`.
 
 ### 6. Done
 

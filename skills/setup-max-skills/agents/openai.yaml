@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Max Skills"
+  short_description: "Apply Max's Claude Code configuration"
+policy:
+  allow_implicit_invocation: false

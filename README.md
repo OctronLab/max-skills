@@ -1,24 +1,33 @@
 # Max Skills
 
-My personal agent skills, packaged as a Claude Code plugin.
+My personal agent skills. Built for Claude Code, installable on Codex too.
 
 ## Installation
 
-Add the marketplace, then install the plugin:
+### Any agent (recommended)
+
+[skills.sh](https://skills.sh) copies the skill files into your project, and works with Claude Code, Codex, and anything else that reads `SKILL.md`:
+
+```bash
+npx skills@latest add OctronLab/max-skills
+```
+
+Pick the skills you want and which agents to install them on.
+
+### Claude Code, as a plugin
+
+A managed, read-only bundle that updates when I push:
 
 ```
 /plugin marketplace add OctronLab/max-skills
 /plugin install max-skills@max
 ```
 
-Or from the shell:
+Refresh later with `/plugin marketplace update max`.
 
-```bash
-claude plugin marketplace add OctronLab/max-skills
-claude plugin install max-skills@max
-```
+Pick one route. Installing both leaves you with every skill twice.
 
-Then run `/setup-max-skills` once.
+Either way, run `/setup-max-skills` once afterwards.
 
 ## Skills
 
@@ -27,22 +36,25 @@ Then run `/setup-max-skills` once.
 
 Both are user-invoked only (`disable-model-invocation: true`) - type the slash command to reach them.
 
+## Output styles
+
+Claude Code only; Codex has no equivalent. They ship inside `setup-max-skills`, which copies them to `~/.claude/output-styles/`, so they survive either install route.
+
+- **[ASD-STE100](./skills/setup-max-skills/output-styles/asd-ste100.md)**: controlled language, to stop Opus writing dense prose. Selected by default.
+- **[i-have-adhd](./skills/setup-max-skills/output-styles/i-have-adhd.md)**: leads with the next action, numbers multi-step work, restates state across turns. Vendored from [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) (MIT); `setup-max-skills` checks upstream for updates.
+
 ## Layout
 
 ```
 .claude-plugin/
   marketplace.json   # marketplace metadata, lists the plugin
   plugin.json        # plugin metadata, lists every skill path
-skills/<name>/SKILL.md
-output-styles/<name>.md
+skills/<name>/
+  SKILL.md
+  agents/openai.yaml # Codex metadata: display name, implicit-invocation policy
 ```
 
-## Output styles
-
-- **[ASD-STE100](./output-styles/asd-ste100.md)**: ASD-STE100 controlled language, to stop Opus writing dense prose. `setup-max-skills` selects it by default.
-- **[i-have-adhd](./output-styles/i-have-adhd.md)**: leads with the next action, numbers multi-step work, restates state across turns. Vendored from [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) (MIT); `setup-max-skills` checks upstream for updates.
-
-Adding a skill means creating `skills/<name>/SKILL.md` and adding its path to `plugin.json`.
+A new skill means a `skills/<name>/SKILL.md`, an `agents/openai.yaml` beside it, and its path added to `plugin.json`. Anything a skill needs at runtime lives in its own folder, because that is all skills.sh copies.
 
 ## License
 
