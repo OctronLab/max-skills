@@ -19,7 +19,7 @@ Prompt-driven, not a script. Read the current state, show the diff, confirm, the
 ### 1. Read the current state
 
 - `~/.claude/settings.json`: the file this skill writes. Read it before you touch it. If it does not exist, create it.
-- `.claude/settings.local.json` in the current repo: `/config` writes `outputStyle` here, and project-local wins over user. If it sets `outputStyle`, say so, because the user-level style will not take effect until that key is removed.
+- `.claude/settings.json` and `.claude/settings.local.json` in the current repo: project-local wins over user for both keys this skill cares about. `/config` writes `outputStyle` here, so a value here shadows the user-level style. A `remoteControlAtStartup: false` here turns auto-connect off for this repo alone. Report either, because neither is visible from `~/.claude/settings.json`.
 - `~/.claude/output-styles/`: are `asd-ste100.md` and `i-have-adhd.md` already there, and do they still match this skill's copies? `diff` them.
 - Installed plugins: is `mattpocock-skills` already there?
 
@@ -66,7 +66,16 @@ Then select one. Default to whatever `outputStyle` already holds, so a re-run ne
 
 Both keep the coding instructions, so only the prose changes.
 
-**`remoteControlAtStartup`** connects Remote Control when a session starts, in every repo. This key is only honored from a user or managed file; a project file that sets `true` is ignored.
+**`remoteControlAtStartup`** connects Remote Control at session start, in every repo. It is the same switch as **Enable remote control by default** in the desktop app and **Enable Remote Control for all sessions** in the VS Code extension.
+
+Scope is asymmetric, which is the one way "always on" quietly stops being true:
+
+- A `true` counts only from `~/.claude/settings.json` or managed settings. A checked-in project file cannot turn Remote Control on for everyone who clones the repo.
+- A `false` counts from a project file too, and switches auto-connect off for that repo alone.
+
+So a user-level `true` is necessary but not sufficient. If a repo does not auto-connect, look for a `false` in its `.claude/settings.json` or `.claude/settings.local.json`.
+
+On Team and Enterprise plans, Remote Control is off until an Owner enables it in the [Claude Code admin settings](https://claude.ai/admin-settings/claude-code). No settings file overrides that.
 
 ### 4. Install mattpocock-skills
 
