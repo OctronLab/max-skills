@@ -24,6 +24,8 @@ To exercise a change end to end, add the working copy as a local marketplace so 
 
 Skills and output styles load at session start, so a restart or `/clear` is needed before a change is visible.
 
+Installed copies do not auto-update. After pushing, consumers pull with `/plugin marketplace update max` or `npx skills@latest update`, so bump `version` in `plugin.json` on any change worth pulling.
+
 ## Dual distribution, and the constraint it imposes
 
 The repo ships through two channels that package it differently:

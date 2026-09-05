@@ -12,6 +12,8 @@ Apply Max's Claude Code configuration. Every setting below is user-scoped, so it
 
 Prompt-driven, not a script. Read the current state, show the diff, confirm, then write.
 
+**Update this skill before running it.** Neither install route auto-updates, so a cached copy can be behind. `/plugin marketplace update max` for a plugin install, `npx skills@latest update` for skills.sh. Mention this once if the run turns up nothing to change.
+
 **Safe to run any number of times.** Every step converges on the same end state, and a re-run on an already-configured machine changes nothing. Re-run it to pick up a new setting, switch output style, or pull an upstream change.
 
 ## Process

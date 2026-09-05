@@ -23,11 +23,20 @@ A managed, read-only bundle that updates when I push:
 /plugin install max-skills@max
 ```
 
-Refresh later with `/plugin marketplace update max`.
-
 Pick one route. Installing both leaves you with every skill twice.
 
 Either way, run `/setup-max-skills` once afterwards.
+
+### Updating
+
+Neither route auto-updates. Pull changes with whichever matches how you installed:
+
+```
+/plugin marketplace update max      # plugin
+npx skills@latest update            # skills.sh
+```
+
+Then restart or `/clear`. `/setup-max-skills` is safe to re-run and will apply anything new.
 
 ## Skills
 
