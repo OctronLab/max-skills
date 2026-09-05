@@ -21,7 +21,9 @@ Prompt-driven, not a script. Read the current state, show the diff, confirm, the
 - `~/.claude/settings.json`: the file this skill writes. Read it before you touch it. If it does not exist, create it.
 - `.claude/settings.json` and `.claude/settings.local.json` in the current repo: project-local wins over user for both keys this skill cares about. `/config` writes `outputStyle` here, so a value here shadows the user-level style. A `remoteControlAtStartup: false` here turns auto-connect off for this repo alone. Report either, because neither is visible from `~/.claude/settings.json`.
 - `~/.claude/output-styles/`: are `asd-ste100.md` and `i-have-adhd.md` already there, and do they still match this skill's copies? `diff` them.
+- `statusLine` in `~/.claude/settings.json`.
 - Installed plugins: is `mattpocock-skills` already there?
+- `command -v herdr`, and if it resolves, `herdr integration status`.
 
 ### 2. Present the diff and confirm
 
@@ -66,6 +68,19 @@ Then select one. Default to whatever `outputStyle` already holds, so a re-run ne
 
 Both keep the coding instructions, so only the prose changes.
 
+**`statusLine`** runs [claude-powerline](https://github.com/Owloops/claude-powerline) as a command status line:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y @owloops/claude-powerline@latest --style=powerline"
+  }
+}
+```
+
+`npx -y` fetches it on demand, so there is nothing to install and no config file. Leave any existing `statusLine` alone and just report it; a status line is a taste decision and Max may have moved on.
+
 **`remoteControlAtStartup`** connects Remote Control at session start, in every repo. It is the same switch as **Enable remote control by default** in the desktop app and **Enable Remote Control for all sessions** in the VS Code extension.
 
 Scope is asymmetric, which is the one way "always on" quietly stops being true:
@@ -87,7 +102,27 @@ claude plugin install mattpocock-skills
 
 Skip this step if it is already installed.
 
-### 5. Check the `i-have-adhd` upstream for updates
+### 5. Offer herdr
+
+[herdr](https://herdr.dev) is a terminal workspace manager for AI coding agents. It is optional, so offer it rather than installing it.
+
+If `herdr` is not on `PATH`, show the install command and ask:
+
+```bash
+curl -fsSL https://herdr.dev/install.sh | sh
+```
+
+If it is installed, run `herdr integration status`. That lists every agent it knows about and the version of the hook installed for each. When the `claude` row says anything but `current`, install or refresh the hook:
+
+```bash
+herdr integration install claude
+```
+
+The hook it writes to `~/.claude/hooks/herdr-agent-state.sh` is managed by herdr and gets overwritten on every update, so never hand-edit it.
+
+Skip this whole step if `herdr` is absent and Max declines.
+
+### 6. Check the `i-have-adhd` upstream for updates
 
 The [`i-have-adhd`](./output-styles/i-have-adhd.md) style is a vendored copy of a skill by [ayghri](https://github.com/ayghri/i-have-adhd) (MIT). It does not update itself. Check whether upstream has moved:
 
@@ -97,7 +132,7 @@ curl -sSL https://raw.githubusercontent.com/ayghri/i-have-adhd/main/skills/i-hav
 
 Compare the body below the frontmatter against `./output-styles/i-have-adhd.md`. If it differs, show the diff and ask whether to pull the change in. Keep this skill's frontmatter either way; only the body is vendored. A pulled change belongs in both this skill's copy and `~/.claude/output-styles/i-have-adhd.md`.
 
-### 6. Done
+### 7. Done
 
 Tell the user what changed, or that nothing needed changing.
 

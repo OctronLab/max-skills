@@ -31,7 +31,7 @@ Either way, run `/setup-max-skills` once afterwards.
 
 ## Skills
 
-- **[setup-max-skills](./skills/setup-max-skills/SKILL.md)**: apply my Claude Code configuration - git attribution off, ASD-STE100 or i-have-adhd output style, Remote Control at startup, and Matt Pocock's skills.
+- **[setup-max-skills](./skills/setup-max-skills/SKILL.md)**: apply my Claude Code configuration - git attribution off, an output style, Remote Control at startup, the claude-powerline status line, Matt Pocock's skills, and herdr.
 - **[teach-me](./skills/teach-me/SKILL.md)**: teach me a topic over multiple sessions, using the current directory as a stateful teaching workspace.
 
 Both are user-invoked only (`disable-model-invocation: true`) - type the slash command to reach them.
