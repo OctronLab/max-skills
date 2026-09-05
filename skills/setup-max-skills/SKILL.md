@@ -1,6 +1,6 @@
 ---
 name: setup-max-skills
-description: "Apply Max's Claude Code configuration: git attribution off, ASD-STE100 output style, Remote Control at startup, and the mattpocock-skills plugin. Run once after installing."
+description: "Apply Max's Claude Code configuration: git attribution off, ASD-STE100 output style, Remote Control at startup, and the mattpocock-skills plugin. Run it after installing, and again any time you want to change one of them."
 disable-model-invocation: true
 ---
 
@@ -12,17 +12,26 @@ Apply Max's Claude Code configuration. Every setting below is user-scoped, so it
 
 Prompt-driven, not a script. Read the current state, show the diff, confirm, then write.
 
+**Safe to run any number of times.** Every step converges on the same end state, and a re-run on an already-configured machine changes nothing. Re-run it to pick up a new setting, switch output style, or pull an upstream change.
+
 ## Process
 
 ### 1. Read the current state
 
 - `~/.claude/settings.json`: the file this skill writes. Read it before you touch it. If it does not exist, create it.
 - `.claude/settings.local.json` in the current repo: `/config` writes `outputStyle` here, and project-local wins over user. If it sets `outputStyle`, say so, because the user-level style will not take effect until that key is removed.
+- `~/.claude/output-styles/`: are `asd-ste100.md` and `i-have-adhd.md` already there, and do they still match this skill's copies? `diff` them.
 - Installed plugins: is `mattpocock-skills` already there?
 
 ### 2. Present the diff and confirm
 
-Show the exact JSON that will change. One confirmation for the whole set is enough.
+Show only what actually changes. A key that already holds the target value is a no-op: list it as already set, do not re-write it, and do not ask about it.
+
+If nothing differs and both style files match, say the machine is already configured and skip to step 5. There is nothing to confirm.
+
+Otherwise one confirmation for the whole set is enough.
+
+A value that diverges deliberately is not a mistake to correct. If `attribution.commit` holds a custom trailer string rather than `false`, or `outputStyle` names a style that is not one of these two, point it out and ask before overwriting.
 
 ### 3. Write `~/.claude/settings.json`
 
@@ -40,11 +49,17 @@ Merge these keys. Do not rewrite the file wholesale; keep every key that is alre
 }
 ```
 
+`outputStyle` is shown at its default here. On a re-run, keep the value that is already set unless the user asks to change it.
+
 **`attribution`** turns off all three things Claude Code adds to git by default: the `Co-authored-by: Claude` commit trailer, the attribution line in PR descriptions, and the claude.ai session link in cloud and Remote Control commits. Max wants his commits to look like his commits.
 
 If the file still has `includeCoAuthoredBy`, delete it. That key is deprecated and `attribution` replaces it.
 
-**`outputStyle`** picks one of the two styles this skill ships. Copy both files from [`./output-styles/`](./output-styles) into `~/.claude/output-styles/`, then ask which one to select. Default to `ASD-STE100`. Overwrite an older copy; these files are the source of truth.
+**`outputStyle`** picks one of the two styles this skill ships.
+
+Copy both files from [`./output-styles/`](./output-styles) into `~/.claude/output-styles/`. An identical file is a no-op. A file that differs is either an upgrade from this skill or a local edit the user made, and you cannot tell which apart: show the diff and ask before overwriting.
+
+Then select one. Default to whatever `outputStyle` already holds, so a re-run never silently reverts an earlier choice; only fall back to `ASD-STE100` when the key is unset.
 
 - [`ASD-STE100`](./output-styles/asd-ste100.md): Opus 5 writes dense prose by default. ASD-STE100 is a controlled language - short sentences, one idea each, plain approved words.
 - [`i-have-adhd`](./output-styles/i-have-adhd.md): leads with the next action, numbers multi-step work, restates state across turns, kills tangents.
@@ -75,7 +90,6 @@ Compare the body below the frontmatter against `./output-styles/i-have-adhd.md`.
 
 ### 6. Done
 
-Tell the user what changed. Two things need a restart or `/clear`:
+Tell the user what changed, or that nothing needed changing.
 
-- The output style is part of the system prompt, so it applies to the next session.
-- `remoteControlAtStartup` acts at session start.
+If `outputStyle` or `remoteControlAtStartup` changed, mention that both take effect at session start, so they need a restart or `/clear`. Skip that line when neither moved.
