@@ -1,0 +1,5 @@
+# macOS
+.DS_Store
+
+# Personal Claude Code settings; the shared .claude/settings.json stays tracked
+.claude/settings.local.json
